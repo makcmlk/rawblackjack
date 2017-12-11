@@ -54,7 +54,7 @@ class Game
   def result
     results = @match.result
     puts 'Result of the round:'
-    # puts "Your score #{results[0]} - bot Dealer score #{result[1]}"
+    puts "Your score #{results[0]} (@match.cards) - bot Dealer score #{result[1]} (@match.cards_of_bot)"
     puts 'What to do? 1: Play again!, 2: Exit'
     input = gets.chomp.to_i
     case input
@@ -68,7 +68,7 @@ class Game
   def show_cards
     puts "ROUND No#{} You got:#{@match.bank}#$ bet = 10$"
     puts 'Player: cards (points)'
-    puts "#{@match.player_name}: #{@match.player_cards.to_s} (#{@match.result[0]})"
+    puts "#{@match.player_name}: #{@match.cards.to_s} (#{@match.result[0]})"
     puts "Dealer: ######## (#{'#' * @match.result[0].to_s.size})"
   end
 

@@ -12,8 +12,6 @@ class Player
   end
 
   def points
-    puts @cards
-    summ = 0
   end
 
   def new_card(card)

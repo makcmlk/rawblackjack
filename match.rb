@@ -3,9 +3,9 @@ require_relative 'Deck'
 
 # asdsd
 class Match
-  def initialize(player_name1, player_name2)
-    @player = Player.new(player_name1)
-    @bot = Player.new(player_name2)
+  def initialize(name1, name2)
+    @player = Player.new(name1)
+    @bot = Player.new(name2)
   end
 
   def round_start
@@ -23,6 +23,7 @@ class Match
   end
 
   def bot_turn
+    @bot.new_card(@deck.card) if @bot.points > 15
   end
 
   def result
@@ -42,10 +43,11 @@ class Match
     @player.name
   end
 
-  def player_cards
+  def cards
     @player.cards
   end
 
-  def bot_cards
+  def cards_of_bot
+    @bot.cards
   end
 end
