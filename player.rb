@@ -8,10 +8,7 @@ class Player
   end
 
   def cards
-    @cards.to_s
-  end
-
-  def points
+    @cards
   end
 
   def new_card(card)
@@ -19,7 +16,7 @@ class Player
   end
 
   def bet(summ)
-    return false unless summ > @bank
+    @cards = []
     @bank -= summ
   end
 

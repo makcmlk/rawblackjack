@@ -28,7 +28,7 @@ class Game
   def match_start
     puts 'Enter your name: '
     input = gets.chomp.to_s
-    @match = Match.new(input, 'Robot')
+    @match = Match.new(input, 'Robot', 10)
     round
   end
 
@@ -46,15 +46,23 @@ class Game
       @match.bot_turn
       result
     when 3
-      @match.open_cards
       result
     end
   end
 
   def result
     results = @match.result
+    player_points = results[0]
+    bot_points = results[1]
+    winner = results[2]
     puts 'Result of the round:'
-    puts "Your score #{results[0]} (@match.cards) - bot Dealer score #{result[1]} (@match.cards_of_bot)"
+    if winner.nil?
+      puts '*** ROUND DRAW! ***'
+    else
+      puts "*** #{winner.upcase} WIN! ***"
+    end
+    puts "Your cards: #{@match.player_cards} (#{player_points}) - Dealer cards: #{@match.cards_bot} (#{bot_points})"
+    puts "Your bank: #{@match.bank}$"
     puts 'What to do? 1: Play again!, 2: Exit'
     input = gets.chomp.to_i
     case input
@@ -66,10 +74,9 @@ class Game
   end
 
   def show_cards
-    puts "ROUND No#{} You got:#{@match.bank}#$ bet = 10$"
-    puts 'Player: cards (points)'
-    puts "#{@match.player_name}: #{@match.cards.to_s} (#{@match.result[0]})"
-    puts "Dealer: ######## (#{'#' * @match.result[0].to_s.size})"
+    puts '= * = * = * = * = * = * = * = * = * = * = * = * = * ='
+    puts "ROUND No#{} You got:#{@match.bank}$"
+    puts "Your cards: #{@match.player_cards} (#{@match.player_points}) - Dealer cards: ######## (##)"
   end
 
 end
