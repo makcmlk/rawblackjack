@@ -1,7 +1,6 @@
 require_relative 'Player'
 require_relative 'Deck'
 
-# asdsd
 class Match
   def initialize(name1, name2, summ)
     @player = Player.new(name1)
@@ -29,43 +28,42 @@ class Match
   def result
     player_points = Deck.points_of(@player.cards)
     bot_points = Deck.points_of(@bot.cards)
-    if (player_points - 21).abs < (bot_points - 21).abs
-      @player.profit(@bet_summ * 2)
-      return [player_points, bot_points, @player.name]
-    elsif (player_points - 21).abs > (bot_points - 21).abs
-      @bot.profit(@bet_summ * 2)
-      return [player_points, bot_points, @bot.name]
-    else
+    puts "#{(player_points - 21).abs}  - #{(bot_points - 21).abs}"
+    if player_points == bot_points
+      puts "="
       @player.profit(@bet_summ)
       @bot.profit(@bet_summ)
-      [player_points, bot_points, nil]
+      nil
+    end
+    bot_lose = bot_points > 21 && player_points < 21
+    player_won = bot_points < 21 && player_points < 21 && (bot_points - 21).abs > (player_points - 21).abs
+    if bot_lose || player_won
+      @player.profit(@bet_summ * 2)
+      @player.name
+    end
+    player_lose = bot_points < 21 && player_points > 21
+    bot_won = bot_points < 21 && player_points < 21 && (bot_points - 21).abs < (player_points - 21).abs
+    if player_lose || bot_won
+      @bot.profit(@bet_summ * 2)
+      @bot.name
     end
   end
 
   def player_bet
-    puts @player.bank
     @player.bet(@bet_summ)
-    puts @player.bank
     @bot.bet(@bet_summ)
   end
 
-  def bank
-    @player.bank
+  def player
+    { 'name' => @player.name,
+      'cards' => @player.cards,
+      'bank' => @player.bank,
+      'points' => Deck.points_of(@player.cards) }
   end
 
-  def player_name
-    @player.name
-  end
-
-  def player_points
-    Deck.points_of(@player.cards)
-  end
-
-  def player_cards
-    @player.cards
-  end
-
-  def cards_bot
-    @bot.cards
+  def bot
+    { 'name' => @bot.name,
+      'cards' => @bot.cards,
+      'points' => Deck.points_of(@bot.cards) }
   end
 end
