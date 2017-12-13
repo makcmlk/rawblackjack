@@ -1,5 +1,4 @@
 require_relative 'Match'
-require_relative 'Player'
 
 class Game
   def self.run
@@ -35,7 +34,7 @@ class Game
 
   def show_cards
     puts '= * = * = * = * = * = * = * = * = * = * = * = * = * ='
-    puts "ROUND No#{} You got:#{@match.player['bank']}$"
+    puts "NEW ROUND! Your bank:#{@match.player['bank']}$"
     puts "#{@match.player['name']}: #{@match.player['cards']} (#{@match.player['points']})"
     puts "#{@match.bot['name']}: ######## (##)"
   end
@@ -68,8 +67,8 @@ class Game
     end
     puts "#{@match.player['name']}: #{@match.player['cards']} (#{@match.player['points']})"
     puts "#{@match.bot['name']}: #{@match.bot['cards']} (#{@match.bot['points']})"
-    puts "Your bank: #{@match.player['bank']}$"
     puts '= * = * = * = * = * = * = * = * = * = * = * = * = * ='
+    puts "Your bank: #{@match.player['bank']}$"
     puts 'What to do? 1: Play again!, 2: Exit'
     input = gets.chomp.to_i
     case input

@@ -10,7 +10,8 @@ class Match
 
   def round_start
     @deck = Deck.new
-    player_bet
+    @player.bet(@bet_summ)
+    @bot.bet(@bet_summ)
     @player.new_card(@deck.card)
     @bot.new_card(@deck.card)
     @player.new_card(@deck.card)
@@ -26,34 +27,25 @@ class Match
   end
 
   def result
-    player_points = Deck.points_of(@player.cards)
-    bot_points = Deck.points_of(@bot.cards)
-    if player_points == bot_points
+    player = Deck.points_of(@player.cards)
+    bot = Deck.points_of(@bot.cards)
+    if player == bot
       @player.profit(@bet_summ)
       @bot.profit(@bet_summ)
       return nil
     end
-    bot_lose = bot_points > 21 && player_points <= 21
-    player_won = bot_points < 21 && player_points <= 21 && (bot_points - 21).abs > (player_points - 21).abs
-    puts "bot_lose #{bot_lose}"
-    puts "player_won #{player_won}"    
+    bot_lose = bot > 21 && player <= 21
+    player_won = bot < 21 && player <= 21 && (bot - 21).abs > (player - 21).abs
     if bot_lose || player_won
       @player.profit(@bet_summ * 2)
       return @player.name
     end
-    player_lose = bot_points <= 21 && player_points > 21
-    bot_won = bot_points <= 21 && player_points < 21 && (bot_points - 21).abs < (player_points - 21).abs
-    puts "player_lose #{player_lose}"
-    puts "bot_won #{bot_won}"    
+    player_lose = bot <= 21 && player > 21
+    bot_won = bot <= 21 && player < 21 && (bot - 21).abs < (player - 21).abs
     if player_lose || bot_won
       @bot.profit(@bet_summ * 2)
       return @bot.name
     end
-  end
-
-  def player_bet
-    @player.bet(@bet_summ)
-    @bot.bet(@bet_summ)
   end
 
   def player
