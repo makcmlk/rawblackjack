@@ -28,24 +28,26 @@ class Match
   def result
     player_points = Deck.points_of(@player.cards)
     bot_points = Deck.points_of(@bot.cards)
-    puts "#{(player_points - 21).abs}  - #{(bot_points - 21).abs}"
     if player_points == bot_points
-      puts "="
       @player.profit(@bet_summ)
       @bot.profit(@bet_summ)
-      nil
+      return nil
     end
-    bot_lose = bot_points > 21 && player_points < 21
-    player_won = bot_points < 21 && player_points < 21 && (bot_points - 21).abs > (player_points - 21).abs
+    bot_lose = bot_points > 21 && player_points <= 21
+    player_won = bot_points < 21 && player_points <= 21 && (bot_points - 21).abs > (player_points - 21).abs
+    puts "bot_lose #{bot_lose}"
+    puts "player_won #{player_won}"    
     if bot_lose || player_won
       @player.profit(@bet_summ * 2)
-      @player.name
+      return @player.name
     end
-    player_lose = bot_points < 21 && player_points > 21
-    bot_won = bot_points < 21 && player_points < 21 && (bot_points - 21).abs < (player_points - 21).abs
+    player_lose = bot_points <= 21 && player_points > 21
+    bot_won = bot_points <= 21 && player_points < 21 && (bot_points - 21).abs < (player_points - 21).abs
+    puts "player_lose #{player_lose}"
+    puts "bot_won #{bot_won}"    
     if player_lose || bot_won
       @bot.profit(@bet_summ * 2)
-      @bot.name
+      return @bot.name
     end
   end
 
